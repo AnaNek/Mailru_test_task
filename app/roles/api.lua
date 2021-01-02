@@ -36,6 +36,14 @@ end
 local function http_song_add(req)
     local body = req:json()
     
+    if body == nil then
+        return error_response(req, "Invalid body", 400)
+    end
+    
+    if body.key == nil or body.value == nil then
+        return error_response(req, "Invalid body", 400)
+    end
+    
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(body.key)
     
@@ -60,6 +68,10 @@ end
 
 local function http_song_get(req)
     local song_id = tonumber(req:stash('song_id'))
+    
+    if song_id == nil then
+        return error_response(req, "Invalid key", 400)
+    end
     
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(song_id)
@@ -86,6 +98,10 @@ end
 local function http_song_delete(req)
     local song_id = tonumber(req:stash('song_id'))
     
+    if song_id == nil then
+        return error_response(req, "Invalid key", 400)
+    end
+    
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(song_id)
     
@@ -111,6 +127,18 @@ end
 local function http_song_update(req)
     local song_id = tonumber(req:stash('song_id'))
     local body = req:json()
+    
+    if song_id == nil then
+        return error_response(req, "Invalid key", 400)
+    end
+    
+    if body == nil then
+        return error_response(req, "Invalid body", 400)
+    end
+    
+    if body.value == nil then
+        return error_response(req, "Invalid body", 400)
+    end
     
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(song_id)
