@@ -1,24 +1,24 @@
 ---
-Mailru_testcase.router:
+Mailru_test_task.router:
   advertise_uri: localhost:3301
   http_port: 8081
 
-Mailru_testcase.s1-master:
+Mailru_test_task.s1-master:
   advertise_uri: localhost:3302
   http_port: 8082
 
-Mailru_testcase.s1-replica:
+Mailru_test_task.s1-replica:
   advertise_uri: localhost:3303
   http_port: 8083
 
-Mailru_testcase.s2-master:
+Mailru_test_task.s2-master:
   advertise_uri: localhost:3304
   http_port: 8084
 
-Mailru_testcase.s2-replica:
+Mailru_test_task.s2-replica:
   advertise_uri: localhost:3305
   http_port: 8085
 
-Mailru_testcase-stateboard:
+Mailru_test_task-stateboard:
   listen: localhost:3310
   password: passwd

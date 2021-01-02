@@ -38,7 +38,7 @@ local ok, err = cartridge.cfg({
         'app.roles.api',
         'app.roles.storage',
     },
-    cluster_cookie = 'Mailru_testcase-cluster-cookie',
+    cluster_cookie = 'Mailru_test_task-cluster-cookie',
 })
 
 assert(ok, tostring(err))

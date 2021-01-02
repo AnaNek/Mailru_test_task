@@ -1,4 +1,4 @@
-package = 'Mailru_testcase'
+package = 'Mailru_test_task'
 version = 'scm-1'
 source  = {
 	url = '/dev/null',
