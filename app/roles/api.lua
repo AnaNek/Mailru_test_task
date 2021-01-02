@@ -11,26 +11,30 @@ local function json_response(req, json, status)
     return resp
 end
 
+local function success_response(req, json, status, key)
+    local resp = json_response(req, json, status)
+    log.info("%s status:%d key: %d", req.method, resp.status, key)
+    return resp
+end
+
+local function error_response(req, msg, status)
+    local resp = json_response(req, {info = msg}, status)
+    log.info("%s status:%d %s", req.method, resp.status, msg)
+    return resp
+end
+
 local function storage_error_response(req, error)
     if error.err == "Already exist" then
-        return json_response(req, {
-        info = "Already exist"
-        }, 409)
+        return error_response(req, "Already exist", 409)
     elseif error.err == "Not found" then
-        return json_response(req, {
-        info = "Not found"
-        }, 404)
+        return error_response(req, "Not found", 404)
     else
-        return json_response(req, {
-        info = "Internal error",
-        error = error
-        }, 500)
+        return error_response(req, "Internal error", 500)
     end
 end
 
 local function http_song_add(req)
     local body = req:json()
-    log.info("POST", body)
     
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(body.key)
@@ -45,21 +49,17 @@ local function http_song_add(req)
     )
     
     if error then
-        return json_response(req, {
-        info = "Internal error",
-        error = error
-        }, 500)
+        return error_response(req, "Internal error", 500)
     end
     if resp.error then
         return storage_error_response(req, resp.error)
     end
     
-    return json_response(req, {info = "Successfully created"}, 201)
+    return success_response(req, {info = "Song was added"}, 201, tonumber(body.key))
 end
 
 local function http_song_get(req)
     local song_id = tonumber(req:stash('song_id'))
-    log.info("GET")
     
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(song_id)
@@ -74,21 +74,17 @@ local function http_song_get(req)
     )
     
     if error then
-        return json_response(req, {
-        info = "Internal error",
-        error = error
-        }, 500)
+        return error_response(req, "Internal error", 500)
     end
     if resp.error then
         return storage_error_response(req, resp.error)
     end
     
-    return json_response(req, resp.song, 200)
+    return success_response(req, resp.song, 200, song_id)
 end
 
 local function http_song_delete(req)
     local song_id = tonumber(req:stash('song_id'))
-    log.info("DELETE")
     
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(song_id)
@@ -103,22 +99,18 @@ local function http_song_delete(req)
     )
     
     if error then
-        return json_response(req, {
-        info = "Internal error",
-        error = error
-        }, 500)
+        return error_response(req, "Internal error", 500)
     end
     if resp.error then
         return storage_error_response(req, resp.error)
     end
     
-    return json_response(req, {info = "Deleted"} , 200)
+    return success_response(req, {info = "Song was deleted"}, 200, song_id)
 end
  
 local function http_song_update(req)
     local song_id = tonumber(req:stash('song_id'))
     local body = req:json()
-    log.info("PUT")
     
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(song_id)
@@ -133,16 +125,13 @@ local function http_song_update(req)
     )
     
     if error then
-        return json_response(req, {
-        info = "Internal error",
-        error = error
-        }, 500)
+        return error_response(req, "Internal error", 500)
     end
     if resp.error then
         return storage_error_response(req, resp.error)
     end
     
-    return json_response(req, resp.song, 200)
+    return success_response(req, resp.song, 200, song_id)
 end
    
 local function init(opts)
