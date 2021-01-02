@@ -9,7 +9,7 @@
 
 В хранилище содержится информация о песнях.
 
-Формат спейса описывается идентификатором песни, идентификатором сегмента, названием песни, исполнителем, длительностью композиции.
+Формат спейса описывается идентификатором песни, идентификатором сегмента, названием песни, исполнителем, длительностью композиции в секундах.
 
 Инициализация необходимого пространства в хранилище:
 
@@ -62,13 +62,13 @@ end
 1. Добавление песни в хранилище
 
 ```
-curl -X POST -v -H "Content-Type: application/json" -d '{"key": 1, "value": {"name": "Glory", "artist": "Hollywood undead", "duration": 180}}' http://localhost:8081/kv
+curl -X POST -v -H "Content-Type: application/json" -d '{"key": 3, "value": {"name": "In the end", "artist": "Linkin park", "duration": 185}}' http://185.86.146.113:8081/kv
 Note: Unnecessary use of -X or --request, POST is already inferred.
-*   Trying 127.0.0.1:8081...
+*   Trying 185.86.146.113:8081...
 * TCP_NODELAY set
-* Connected to localhost (127.0.0.1) port 8081 (#0)
+* Connected to 185.86.146.113 (185.86.146.113) port 8081 (#0)
 > POST /kv HTTP/1.1
-> Host: localhost:8081
+> Host: 185.86.146.113:8081
 > User-Agent: curl/7.68.0
 > Accept: */*
 > Content-Type: application/json
@@ -78,11 +78,11 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 201 Created
 < Content-length: 25
-< Server: Tarantool http (tarantool v2.5.2-0-g05730d326)
+< Server: Tarantool http (tarantool v2.5.3-0-gf93e48013)
 < Content-type: application/json; charset=utf-8
 < Connection: keep-alive
 < 
-* Connection #0 to host localhost left intact
+* Connection #0 to host 185.86.146.113 left intact
 {"info":"Song was added"}
 ```
 
@@ -91,73 +91,73 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 2. Получение песни из хранилища по id
 
 ```
-curl -X GET -v http://localhost:8081/kv/1
+curl -X GET -v http://185.86.146.113:8081/kv/3
 Note: Unnecessary use of -X or --request, GET is already inferred.
-*   Trying 127.0.0.1:8081...
+*   Trying 185.86.146.113:8081...
 * TCP_NODELAY set
-* Connected to localhost (127.0.0.1) port 8081 (#0)
-> GET /kv/1 HTTP/1.1
-> Host: localhost:8081
+* Connected to 185.86.146.113 (185.86.146.113) port 8081 (#0)
+> GET /kv/3 HTTP/1.1
+> Host: 185.86.146.113:8081
 > User-Agent: curl/7.68.0
 > Accept: */*
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 Ok
 < Content-length: 71
-< Server: Tarantool http (tarantool v2.5.2-0-g05730d326)
+< Server: Tarantool http (tarantool v2.5.3-0-gf93e48013)
 < Content-type: application/json; charset=utf-8
 < Connection: keep-alive
 < 
-* Connection #0 to host localhost left intact
-{"song_id":1,"name":"Glory","duration":180,"artist":"Hollywood undead"}
+* Connection #0 to host 185.86.146.113 left intact
+{"song_id":3,"name":"In the end","duration":185,"artist":"Linkin park"}
 ```
 3. Изменение информации о песне в хранилище по id
 
 ```
-curl -X PUT -v -H "Content-Type: application/json" -d '{"key": 1, "value": {"name": "glory", "artist": "Hollywood Undead", "duration": 160}}' http://localhost:8081/kv/1
-*   Trying 127.0.0.1:8081...
+curl -X PUT -v -H "Content-Type: application/json" -d '{"value": {"name": "In the End", "artist": "Linkin Park", "duration": 187}}' http://185.86.146.113:8081/kv/3
+*   Trying 185.86.146.113:8081...
 * TCP_NODELAY set
-* Connected to localhost (127.0.0.1) port 8081 (#0)
-> PUT /kv/1 HTTP/1.1
-> Host: localhost:8081
+* Connected to 185.86.146.113 (185.86.146.113) port 8081 (#0)
+> PUT /kv/3 HTTP/1.1
+> Host: 185.86.146.113:8081
 > User-Agent: curl/7.68.0
 > Accept: */*
 > Content-Type: application/json
-> Content-Length: 85
+> Content-Length: 75
 > 
-* upload completely sent off: 85 out of 85 bytes
+* upload completely sent off: 75 out of 75 bytes
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 Ok
 < Content-length: 71
-< Server: Tarantool http (tarantool v2.5.2-0-g05730d326)
+< Server: Tarantool http (tarantool v2.5.3-0-gf93e48013)
 < Content-type: application/json; charset=utf-8
 < Connection: keep-alive
 < 
-* Connection #0 to host localhost left intact
-{"song_id":1,"name":"glory","duration":160,"artist":"Hollywood Undead"}
+* Connection #0 to host 185.86.146.113 left intact
+{"song_id":3,"name":"In the End","duration":187,"artist":"Linkin Park"}
 ```
 Проверка изменения информации о песне с помощью метода GET:
 
 ```
-curl -X GET -v http://localhost:8081/kv/1
+curl -X GET -v http://185.86.146.113:8081/kv/3
 Note: Unnecessary use of -X or --request, GET is already inferred.
-*   Trying 127.0.0.1:8081...
+*   Trying 185.86.146.113:8081...
 * TCP_NODELAY set
-* Connected to localhost (127.0.0.1) port 8081 (#0)
-> GET /kv/1 HTTP/1.1
-> Host: localhost:8081
+* Connected to 185.86.146.113 (185.86.146.113) port 8081 (#0)
+> GET /kv/3 HTTP/1.1
+> Host: 185.86.146.113:8081
 > User-Agent: curl/7.68.0
 > Accept: */*
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 Ok
 < Content-length: 71
-< Server: Tarantool http (tarantool v2.5.2-0-g05730d326)
+< Server: Tarantool http (tarantool v2.5.3-0-gf93e48013)
 < Content-type: application/json; charset=utf-8
 < Connection: keep-alive
 < 
-* Connection #0 to host localhost left intact
-{"song_id":1,"name":"glory","duration":160,"artist":"Hollywood Undead"}
+* Connection #0 to host 185.86.146.113 left intact
+{"song_id":3,"name":"In the End","duration":187,"artist":"Linkin Park"}
 ```
 
 Информация была изменена
@@ -165,47 +165,47 @@ Note: Unnecessary use of -X or --request, GET is already inferred.
 4. Удаление песни из хранилища по id
 
 ```
-curl -X DELETE -v http://localhost:8081/kv/1
-*   Trying 127.0.0.1:8081...
+curl -X DELETE -v http://185.86.146.113:8081/kv/3
+*   Trying 185.86.146.113:8081...
 * TCP_NODELAY set
-* Connected to localhost (127.0.0.1) port 8081 (#0)
-> DELETE /kv/1 HTTP/1.1
-> Host: localhost:8081
+* Connected to 185.86.146.113 (185.86.146.113) port 8081 (#0)
+> DELETE /kv/3 HTTP/1.1
+> Host: 185.86.146.113:8081
 > User-Agent: curl/7.68.0
 > Accept: */*
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 Ok
 < Content-length: 27
-< Server: Tarantool http (tarantool v2.5.2-0-g05730d326)
+< Server: Tarantool http (tarantool v2.5.3-0-gf93e48013)
 < Content-type: application/json; charset=utf-8
 < Connection: keep-alive
 < 
-* Connection #0 to host localhost left intact
+* Connection #0 to host 185.86.146.113 left intact
 {"info":"Song was deleted"}
 ```
 
 Проверка удаления песни с помощью метода GET:
 
 ```
-curl -X GET -v http://localhost:8081/kv/1
+curl -X GET -v http://185.86.146.113:8081/kv/3
 Note: Unnecessary use of -X or --request, GET is already inferred.
-*   Trying 127.0.0.1:8081...
+*   Trying 185.86.146.113:8081...
 * TCP_NODELAY set
-* Connected to localhost (127.0.0.1) port 8081 (#0)
-> GET /kv/1 HTTP/1.1
-> Host: localhost:8081
+* Connected to 185.86.146.113 (185.86.146.113) port 8081 (#0)
+> GET /kv/3 HTTP/1.1
+> Host: 185.86.146.113:8081
 > User-Agent: curl/7.68.0
 > Accept: */*
 > 
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 404 Not found
 < Content-length: 20
-< Server: Tarantool http (tarantool v2.5.2-0-g05730d326)
+< Server: Tarantool http (tarantool v2.5.3-0-gf93e48013)
 < Content-type: application/json; charset=utf-8
 < Connection: keep-alive
 < 
-* Connection #0 to host localhost left intact
+* Connection #0 to host 185.86.146.113 left intact
 {"info":"Not found"}
 ```
 
