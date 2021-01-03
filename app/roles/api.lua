@@ -44,6 +44,11 @@ local function http_song_add(req)
         return error_response(req, "Invalid body", 400)
     end
     
+    if body.value.name == nil or body.value.artist == nil 
+    or body.value.duration == nil then
+        return error_response(req, "Invalid body", 400)
+    end
+    
     local router = cartridge.service_get('vshard-router').get()
     local bucket_id = router:bucket_id(body.key)
     
@@ -137,6 +142,11 @@ local function http_song_update(req)
     end
     
     if body.value == nil then
+        return error_response(req, "Invalid body", 400)
+    end
+    
+    if body.value.name == nil or body.value.artist == nil 
+    or body.value.duration == nil then
         return error_response(req, "Invalid body", 400)
     end
     
